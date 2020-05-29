@@ -34,4 +34,9 @@ public class TankMotor : MonoBehaviour
         Vector3 rotateVector = Vector3.up * speed * Time.deltaTime;
         tf.Rotate(rotateVector, Space.Self);
     }
+
+    public void Fire()
+    {
+        Instantiate(data.bulletPreFab, data.firePoint.position, data.firePoint.rotation);
+    }
 }
