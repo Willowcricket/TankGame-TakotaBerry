@@ -11,6 +11,7 @@ public class InputManager : MonoBehaviour
     private TankData data;
     public enum InputScheme { WASD, arrowKeys };
     public InputScheme input = InputScheme.WASD;
+
     // Start is called before the first frame update
     void Start()
     {

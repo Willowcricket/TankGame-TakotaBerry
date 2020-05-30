@@ -29,17 +29,18 @@ public class BulletMove : MonoBehaviour
         }
         else
         {
-            Debug.Log("Timer has Expired.");
+            Debug.Log("Bullet Has Dropped Off.");
             Die();
         }
     }
 
+    //When Bullet Hits Something
     private void OnTriggerEnter(Collider other)
     {
         Die();
         if (other.gameObject.tag == "Player" || other.gameObject.tag == "Enemy")
         {
-            Destroy(other.gameObject);
+            other.gameObject.GetComponent<TankData>().currentHealth -= GameManager.Instance.bulletDamage;
         }
         Debug.Log("Bullet Has Hit Something");
     }

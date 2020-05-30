@@ -22,7 +22,7 @@ public class Timer : MonoBehaviour
         }
         else
         {
-            Debug.Log("Timer has Expired.");
+            Debug.Log("Timer Has Expired.");
             timerUntilNextEvent = timerDelay;
         }
     }
