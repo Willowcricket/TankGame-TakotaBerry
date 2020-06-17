@@ -9,7 +9,29 @@ public class AIManager : MonoBehaviour
 {
     private TankMotor motor;
     private TankData data;
-        
+
+    public Transform[] waypoints;
+    public int currentWaypoint = 0;
+    public float closeToWaypoint = 1.0f;
+
+    public enum LoopType {Loop, PingPong, Random};
+    public LoopType loopType;
+    private bool isPatrolForward = true;
+
+    public enum Mode {Patrol, Attack, Flee};
+    public Mode mode;
+
+    public enum Avoidence {NotAvoiding, Rotating, Moving};
+    public Avoidence avoidence;
+
+    public float avoidTime = 1.0f;
+    private float exitTime;
+
+    public enum AIPersonality {Agresive, Cautious, Sentry, Coward};
+    public AIPersonality aiPersonality;
+
+    public float fovDistance = 7.5f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,9 +47,242 @@ public class AIManager : MonoBehaviour
 
     private void InputHandler()
     {
-        motor.Fire();
+        if (aiPersonality == AIPersonality.Agresive)
+        {
+            Agresive();
+        }
+        else if (aiPersonality == AIPersonality.Cautious)
+        {
+            Cautious();
+        }
+        else if (aiPersonality == AIPersonality.Sentry)
+        {
+            Sentry();
+        }
+        else if (aiPersonality == AIPersonality.Coward)
+        {
+            Coward();
+        }
     }
 
+
+
+
+
+    private void Coward()
+    {
+        if (mode == Mode.Patrol)
+        {
+            Patrol();
+        }
+        else if (mode == Mode.Flee)
+        {
+            if (!(avoidence == Avoidence.NotAvoiding))
+            {
+                Avoid();
+            }
+            else
+            {
+                Flee();
+            }
+        }
+    }
+
+    private void Sentry()
+    {
+        
+    }
+
+    private void Cautious()
+    {
+        
+    }
+
+    private void Agresive()
+    {
+        if (CanSeePlayer())
+        {
+            mode = Mode.Attack;
+        }
+        else
+        {
+            mode = Mode.Patrol;
+        }
+
+        if (mode == Mode.Patrol)
+        {
+            Patrol();
+        }
+        else if (mode == Mode.Attack)
+        {
+            if (!(avoidence == Avoidence.NotAvoiding))
+            {
+                Avoid();
+            }
+            else
+            {
+                Chase();
+            }
+        }
+    }
+
+
+
+
+
+    private void Patrol()
+    {
+        if (motor.RotateToward(waypoints[currentWaypoint].position, data.rotateSpeed))
+        {
+            //Do Nothing, Is Rotating
+        }
+        else
+        {
+            motor.Move(data.moveSpeed);
+        }
+
+        if (Vector3.SqrMagnitude(waypoints[currentWaypoint].position - this.gameObject.transform.position) < (closeToWaypoint * closeToWaypoint))
+        {
+            if (loopType == LoopType.Loop)
+            {
+                Loop();
+            }
+            else if (loopType == LoopType.PingPong)
+            {
+                PingPong();
+            }
+            else if (loopType == LoopType.Random)
+            {
+                currentWaypoint = UnityEngine.Random.Range(0, waypoints.Length);
+            }
+        }
+    }
+
+    private void Avoid()
+    {
+        if (avoidence == Avoidence.Rotating)
+        {
+            motor.Rotate(-1 * data.rotateSpeed);
+            if (CanMove())
+            {
+                avoidence = Avoidence.Moving;
+                exitTime = avoidTime;
+            }
+        }
+        else if (avoidence == Avoidence.Moving)
+        {
+            if (CanMove())
+            {
+                motor.Fire();
+                exitTime -= Time.deltaTime;
+                motor.Move(data.moveSpeed);
+                if (exitTime <= 0)
+                {
+                    avoidence = Avoidence.NotAvoiding;
+                }
+            }
+            else
+            {
+                avoidence = Avoidence.Rotating;
+            }
+        }
+    }
+
+    private void Chase()
+    {
+        if (CanMove())
+        {
+            if (motor.RotateToward(GameManager.Instance.player.transform.position, data.rotateSpeed))
+            {
+                //Do Nothing, Is Rotating
+            }
+            else
+            {
+                motor.Fire();
+                motor.Move(data.moveSpeed);
+            }
+        }
+        else
+        {
+            avoidence = Avoidence.Rotating;
+        }
+    }
+
+    private void Flee()
+    {
+
+    }
+
+    private bool CanMove()
+    {
+        RaycastHit hit;
+        Ray frontRay = new Ray(this.gameObject.transform.position, this.gameObject.transform.forward);
+        if (Physics.Raycast(frontRay, out hit, fovDistance))
+        {
+            if (!hit.collider.CompareTag("Player"))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private bool CanSeePlayer()
+    {
+        RaycastHit hit;
+        Ray playerRay = new Ray(this.gameObject.transform.position, GameManager.Instance.player.transform.position);
+        if (Physics.Raycast(playerRay, out hit, fovDistance))
+        {
+
+            Debug.DrawLine(this.gameObject.transform.position, hit.point);
+            if (hit.collider.CompareTag("Player"))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void PingPong()
+    {
+        if (isPatrolForward == true)
+        {
+            if (currentWaypoint < waypoints.Length - 1)
+            {
+                currentWaypoint++;
+            }
+            else
+            {
+                isPatrolForward = false;
+                currentWaypoint--;
+            }
+        }
+        else
+        {
+            if (currentWaypoint > 0)
+            {
+                currentWaypoint--;
+            }
+            else
+            {
+                isPatrolForward = true;
+                currentWaypoint++;
+            }
+        }
+    }
+
+    private void Loop()
+    {
+        if (currentWaypoint == waypoints.Length - 1)
+        {
+            currentWaypoint = 0;
+        }
+        else
+        {
+            currentWaypoint++;
+        }
+    }
+    
     public void OnDestroy()
     {
         GameManager.Instance.score += data.scoreToGive;

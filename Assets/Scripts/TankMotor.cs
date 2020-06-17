@@ -52,6 +52,34 @@ public class TankMotor : MonoBehaviour
         tf.Rotate(rotateVector, Space.Self);
     }
 
+    public bool RotateToward(Vector3 target, float speed)
+    {
+        Vector3 vectorToTarget = target - this.gameObject.transform.position;
+        Quaternion targetRotation = Quaternion.LookRotation(vectorToTarget);
+
+        if (targetRotation == this.gameObject.transform.rotation)
+        {
+            return false;
+        }
+
+        this.gameObject.transform.rotation = Quaternion.RotateTowards(this.gameObject.transform.rotation, targetRotation, speed * Time.deltaTime);
+        return true;
+    }
+
+    public bool RotateAway(Vector3 target, float speed)
+    {
+        Vector3 vectorToTarget = target - this.gameObject.transform.position;
+        Quaternion targetRotation = Quaternion.LookRotation(vectorToTarget);
+
+        if (targetRotation == this.gameObject.transform.rotation)
+        {
+            return false;
+        }
+
+        this.gameObject.transform.rotation = Quaternion.RotateTowards(this.gameObject.transform.rotation, targetRotation, speed * Time.deltaTime);
+        return true;
+    }
+
     //Handle Shooting
     public void Fire()
     {

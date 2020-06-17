@@ -15,6 +15,10 @@ public class CaeraTargetFollow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Player == null)
+        {
+            Player = GameManager.Instance.player;
+        }
         FollowPlayer();
     }
 
