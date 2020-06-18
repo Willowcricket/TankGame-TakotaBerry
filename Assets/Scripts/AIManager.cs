@@ -71,6 +71,15 @@ public class AIManager : MonoBehaviour
 
     private void Coward()
     {
+        if (CanSeePlayer())
+        {
+            mode = Mode.Flee;
+        }
+        else
+        {
+            mode = Mode.Patrol;
+        }
+
         if (mode == Mode.Patrol)
         {
             Patrol();
@@ -90,12 +99,68 @@ public class AIManager : MonoBehaviour
 
     private void Sentry()
     {
-        
+        if (CanSeePlayer())
+        {
+            mode = Mode.Attack;
+        }
+        else
+        {
+            mode = Mode.Patrol;
+        }
+
+        if (mode == Mode.Patrol)
+        {
+            motor.Move(0);
+            motor.Rotate(data.rotateSpeed);
+        }
+        else if (mode == Mode.Attack)
+        {
+            motor.RotateToward(GameManager.Instance.player.transform.position, data.rotateSpeed);
+            motor.Fire();
+        }
     }
 
     private void Cautious()
     {
-        
+        if (CanSeePlayer())
+        {
+            mode = Mode.Attack;
+            if (data.currentHealth < 60.0f)
+            {
+                mode = Mode.Flee;
+            }
+        }
+        else
+        {
+            mode = Mode.Patrol;
+        }
+
+        if (mode == Mode.Patrol)
+        {
+            Patrol();
+        }
+        else if (mode == Mode.Attack)
+        {
+            if (!(avoidence == Avoidence.NotAvoiding))
+            {
+                Avoid();
+            }
+            else
+            {
+                Chase();
+            }
+        }
+        else if (mode == Mode.Flee)
+        {
+            if (!(avoidence == Avoidence.NotAvoiding))
+            {
+                Avoid();
+            }
+            else
+            {
+                Flee();
+            }
+        }
     }
 
     private void Agresive()
@@ -173,7 +238,6 @@ public class AIManager : MonoBehaviour
         {
             if (CanMove())
             {
-                motor.Fire();
                 exitTime -= Time.deltaTime;
                 motor.Move(data.moveSpeed);
                 if (exitTime <= 0)
@@ -210,7 +274,21 @@ public class AIManager : MonoBehaviour
 
     private void Flee()
     {
-
+        if (CanMove())
+        {
+            if (motor.RotateToward(this.gameObject.transform.position - GameManager.Instance.player.transform.position, data.rotateSpeed))
+            {
+                //Do Nothing, Is Rotating
+            }
+            else
+            {
+                motor.Move(data.moveSpeed);
+            }
+        }
+        else
+        {
+            avoidence = Avoidence.Rotating;
+        }
     }
 
     private bool CanMove()
@@ -230,7 +308,7 @@ public class AIManager : MonoBehaviour
     private bool CanSeePlayer()
     {
         RaycastHit hit;
-        Ray playerRay = new Ray(this.gameObject.transform.position, GameManager.Instance.player.transform.position);
+        Ray playerRay = new Ray(this.gameObject.transform.position, GameManager.Instance.player.transform.position - this.gameObject.transform.position);
         if (Physics.Raycast(playerRay, out hit, fovDistance))
         {
 
@@ -242,6 +320,10 @@ public class AIManager : MonoBehaviour
         }
         return false;
     }
+
+
+
+
 
     private void PingPong()
     {
@@ -285,6 +367,6 @@ public class AIManager : MonoBehaviour
     
     public void OnDestroy()
     {
-        GameManager.Instance.score += data.scoreToGive;
+        //GameManager.Instance.score += data.scoreToGive;
     }
 }
