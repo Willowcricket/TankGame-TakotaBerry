@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2171272856711428752
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4529006080539636698}
+  - component: {fileID: 5323229880227034382}
+  m_Layer: 0
+  m_Name: PickUpSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4529006080539636698
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2171272856711428752}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.28828287, y: 1.88, z: -5.63}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5323229880227034382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2171272856711428752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4135052545a60b408d2615317820e10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickUpPreFab: {fileID: 0}
+  pickUpPreFabs:
+  - {fileID: 352624076803787959, guid: bce5aaa423fb30642a1f06974e03f348, type: 3}
+  - {fileID: 6498653190959518863, guid: 96526a6af6d03bc47b1f0d6563202a76, type: 3}
+  - {fileID: 24776396625198560, guid: dbf1ecd3fd0280f4db395054906b4da9, type: 3}
+  - {fileID: 2711015114640287111, guid: 9580126736a903e4e8c93e348ac7e5ad, type: 3}
+  currentPickUp: {fileID: 0}
+  spawnDelay: 10

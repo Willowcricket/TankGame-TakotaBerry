@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CaeraTargetFollow : MonoBehaviour
+public class CameraTargetFollow : MonoBehaviour
 {
     public GameObject Player;
 
