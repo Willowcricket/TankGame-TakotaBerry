@@ -18,6 +18,10 @@ public class TankMotor : MonoBehaviour
         characterController = gameObject.GetComponent<CharacterController>();
         data = gameObject.GetComponent<TankData>();
         tf = gameObject.GetComponent<Transform>();
+        if (this.gameObject.tag == "Player")
+        {
+            GameManager.Instance.player = this.gameObject;
+        }
     }
 
     private void Update()
@@ -91,5 +95,10 @@ public class TankMotor : MonoBehaviour
                 data.readyToFire = true;
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.Instance.SpawnPlayer();
     }
 }

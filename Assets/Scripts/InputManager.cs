@@ -96,5 +96,5 @@ public class InputManager : MonoBehaviour
                 Debug.LogError("[InputManager]: Undefined Input Scheme");
                 break;
         }
-}
+    }
 }
