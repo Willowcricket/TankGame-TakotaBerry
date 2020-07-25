@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1240280757453892340}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -45,7 +45,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPreFab: {fileID: 1757464953814951416, guid: e2e97b9f69146034c9edb0a372d0d0ee,
     type: 3}
-  player: {fileID: 0}
+  playerOne: {fileID: 0}
+  playerTwo: {fileID: 0}
   bulletDamage: 50
-  score: 0
   playerSpawners: []
+  scores: []
+  twoPlayers: 0

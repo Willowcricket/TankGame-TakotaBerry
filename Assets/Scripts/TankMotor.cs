@@ -18,16 +18,32 @@ public class TankMotor : MonoBehaviour
         characterController = gameObject.GetComponent<CharacterController>();
         data = gameObject.GetComponent<TankData>();
         tf = gameObject.GetComponent<Transform>();
-        if (this.gameObject.tag == "Player")
-        {
-            GameManager.Instance.player = this.gameObject;
-        }
     }
 
     private void Update()
     {
         Timer();
         HealthCheck();
+        PlayerOneOrTwo();
+    }
+
+    private void PlayerOneOrTwo()
+    {
+        if (this.gameObject.tag == "Player")
+        {
+            if (GameManager.Instance.playerOne == null)
+            {
+                GameManager.Instance.playerOne = this.gameObject;
+            }
+            if (GameManager.Instance.playerOne != this.gameObject)
+            {
+                if (GameManager.Instance.playerTwo == null)
+                {
+                    GameManager.Instance.playerTwo = this.gameObject;
+                    this.gameObject.GetComponent<InputManager>().input = InputManager.InputScheme.arrowKeys;
+                }
+            }
+        }
     }
 
     //Chech The Tanks Health

@@ -17,9 +17,9 @@ public class InputManager : MonoBehaviour
     {
         motor = gameObject.GetComponent<TankMotor>();
         data = gameObject.GetComponent<TankData>();
-        if (GameManager.Instance.player == null)
+        if (GameManager.Instance.playerOne == null)
         {
-            GameManager.Instance.player = this.gameObject;
+            GameManager.Instance.playerOne = this.gameObject;
         }
     }
 
@@ -90,6 +90,11 @@ public class InputManager : MonoBehaviour
                 else
                 {
                     motor.Rotate(0);
+                }
+
+                if (Input.GetKeyDown(KeyCode.Keypad0))
+                {
+                    motor.Fire();
                 }
                 break;
             default:

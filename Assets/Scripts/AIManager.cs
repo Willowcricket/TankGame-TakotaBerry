@@ -10,6 +10,8 @@ public class AIManager : MonoBehaviour
     private TankMotor motor;
     private TankData data;
 
+    private GameObject Player;
+
     public Transform[] waypoints;
     public int currentWaypoint = 0;
     public float closeToWaypoint = 1.0f;
@@ -115,7 +117,7 @@ public class AIManager : MonoBehaviour
         }
         else if (mode == Mode.Attack)
         {
-            motor.RotateToward(GameManager.Instance.player.transform.position, data.rotateSpeed);
+            motor.RotateToward(Player.transform.position, data.rotateSpeed);
             motor.Fire();
         }
     }
@@ -256,7 +258,7 @@ public class AIManager : MonoBehaviour
     {
         if (CanMove())
         {
-            if (motor.RotateToward(GameManager.Instance.player.transform.position, data.rotateSpeed))
+            if (motor.RotateToward(Player.transform.position, data.rotateSpeed))
             {
                 //Do Nothing, Is Rotating
             }
@@ -276,7 +278,7 @@ public class AIManager : MonoBehaviour
     {
         if (CanMove())
         {
-            if (motor.RotateToward(this.gameObject.transform.position - GameManager.Instance.player.transform.position, data.rotateSpeed))
+            if (motor.RotateToward(this.gameObject.transform.position - Player.transform.position, data.rotateSpeed))
             {
                 //Do Nothing, Is Rotating
             }
@@ -308,14 +310,28 @@ public class AIManager : MonoBehaviour
     private bool CanSeePlayer()
     {
         RaycastHit hit;
-        Ray playerRay = new Ray(this.gameObject.transform.position, GameManager.Instance.player.transform.position - this.gameObject.transform.position);
-        if (Physics.Raycast(playerRay, out hit, fovDistance))
+        Ray playerOneRay = new Ray(this.gameObject.transform.position, GameManager.Instance.playerOne.transform.position - this.gameObject.transform.position);
+        if (Physics.Raycast(playerOneRay, out hit, fovDistance))
         {
-
             Debug.DrawLine(this.gameObject.transform.position, hit.point);
             if (hit.collider.CompareTag("Player"))
             {
+                Player = hit.collider.gameObject;
                 return true;
+            }
+        }
+        if (GameManager.Instance.twoPlayers)
+        {
+            RaycastHit hit2;
+            Ray playerTwoRay = new Ray(this.gameObject.transform.position, GameManager.Instance.playerTwo.transform.position - this.gameObject.transform.position);
+            if (Physics.Raycast(playerTwoRay, out hit2, fovDistance))
+            {
+                Debug.DrawLine(this.gameObject.transform.position, hit2.point);
+                if (hit2.collider.CompareTag("Player"))
+                {
+                    Player = hit2.collider.gameObject;
+                    return true;
+                }
             }
         }
         return false;

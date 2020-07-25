@@ -15,4 +15,5 @@ public class TankData : MonoBehaviour
     public float maxHealth = 100.0f;
     public float currentHealth = 100.0f;
     public float scoreToGive = 10.0f;
+    public Camera camera;
 }

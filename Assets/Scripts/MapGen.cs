@@ -111,6 +111,10 @@ public class MapGen : MonoBehaviour
         }
         GenerateGrid();
         GameManager.Instance.SpawnPlayer();
+        if (GameManager.Instance.twoPlayers)
+        {
+            GameManager.Instance.SpawnPlayer();
+        }
     }
 
     // Update is called once per frame
