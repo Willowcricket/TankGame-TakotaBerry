@@ -42,6 +42,7 @@ public class BulletMove : MonoBehaviour
         {
             other.gameObject.GetComponent<TankData>().currentHealth -= GameManager.Instance.bulletDamage;
         }
+        GameManager.Instance.GetComponent<AudioManager>().PlayFX(2);
         Debug.Log("Bullet Has Hit Something");
     }
 

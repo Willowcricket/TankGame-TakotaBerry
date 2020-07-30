@@ -46,3 +46,4 @@ MonoBehaviour:
   cameras:
   - {fileID: 0}
   - {fileID: 0}
+  startCam: {fileID: 0}

@@ -94,6 +94,7 @@ public class TankMotor : MonoBehaviour
             Instantiate(data.bulletPreFab, data.firePoint.position, data.firePoint.rotation);
             data.readyToFire = false;
             data.reloaded = data.reloadDelay;
+            GameManager.Instance.GetComponent<AudioManager>().PlayFX(1);
         }
     }
 
@@ -115,6 +116,25 @@ public class TankMotor : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameManager.Instance.SpawnPlayer();
+        if (this.gameObject.tag == "Player")
+        {
+            if (GameManager.Instance.playerOne == this.gameObject)
+            {
+                if (GameManager.Instance.playerOneLives > 0)
+                {
+                    GameManager.Instance.SpawnPlayer();
+                    GameManager.Instance.playerOneLives--;
+                }
+            }
+            if (GameManager.Instance.playerTwo == this.gameObject)
+            {
+                if (GameManager.Instance.playerTwoLives > 0)
+                {
+                    GameManager.Instance.SpawnPlayer();
+                    GameManager.Instance.playerTwoLives--;
+                }
+            }
+        }
+        GameManager.Instance.GetComponent<AudioManager>().PlayFX(3);
     }
 }

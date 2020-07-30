@@ -309,28 +309,34 @@ public class AIManager : MonoBehaviour
 
     private bool CanSeePlayer()
     {
-        RaycastHit hit;
-        Ray playerOneRay = new Ray(this.gameObject.transform.position, GameManager.Instance.playerOne.transform.position - this.gameObject.transform.position);
-        if (Physics.Raycast(playerOneRay, out hit, fovDistance))
+        if (GameManager.Instance.playerOne != null)
         {
-            Debug.DrawLine(this.gameObject.transform.position, hit.point);
-            if (hit.collider.CompareTag("Player"))
+            RaycastHit hit;
+            Ray playerOneRay = new Ray(this.gameObject.transform.position, GameManager.Instance.playerOne.transform.position - this.gameObject.transform.position);
+            if (Physics.Raycast(playerOneRay, out hit, fovDistance))
             {
-                Player = hit.collider.gameObject;
-                return true;
+                Debug.DrawLine(this.gameObject.transform.position, hit.point);
+                if (hit.collider.CompareTag("Player"))
+                {
+                    Player = hit.collider.gameObject;
+                    return true;
+                }
             }
         }
         if (GameManager.Instance.twoPlayers)
         {
-            RaycastHit hit2;
-            Ray playerTwoRay = new Ray(this.gameObject.transform.position, GameManager.Instance.playerTwo.transform.position - this.gameObject.transform.position);
-            if (Physics.Raycast(playerTwoRay, out hit2, fovDistance))
+            if (GameManager.Instance.playerTwo != null)
             {
-                Debug.DrawLine(this.gameObject.transform.position, hit2.point);
-                if (hit2.collider.CompareTag("Player"))
+                RaycastHit hit2;
+                Ray playerTwoRay = new Ray(this.gameObject.transform.position, GameManager.Instance.playerTwo.transform.position - this.gameObject.transform.position);
+                if (Physics.Raycast(playerTwoRay, out hit2, fovDistance))
                 {
-                    Player = hit2.collider.gameObject;
-                    return true;
+                    Debug.DrawLine(this.gameObject.transform.position, hit2.point);
+                    if (hit2.collider.CompareTag("Player"))
+                    {
+                        Player = hit2.collider.gameObject;
+                        return true;
+                    }
                 }
             }
         }
@@ -379,10 +385,5 @@ public class AIManager : MonoBehaviour
         {
             currentWaypoint++;
         }
-    }
-    
-    public void OnDestroy()
-    {
-        //GameManager.Instance.score += data.scoreToGive;
     }
 }

@@ -47,7 +47,11 @@ MonoBehaviour:
     type: 3}
   playerOne: {fileID: 0}
   playerTwo: {fileID: 0}
+  playerOneLives: 3
+  playerTwoLives: 3
   bulletDamage: 50
   playerSpawners: []
   scores: []
+  mapGenner: {fileID: 2730438492645855134, guid: 50b45d206cc6ca44eab065ad36730afd,
+    type: 3}
   twoPlayers: 0

@@ -15,6 +15,7 @@ public class PowerUp
         target.currentHealth += healthMod;
         target.maxHealth += maxHealthMod;
         target.reloadDelay -= fireRateMod;
+        GameManager.Instance.GetComponent<AudioManager>().PlayFX(4);
     }
 
     public void OnDeactivate(TankData target)

@@ -90,6 +90,20 @@ public class MapGen : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        mapSeed = SaveManager.Instance.mapSeed;
+        switch (SaveManager.Instance.mapType)
+        {
+            case 0:
+                mapType = MapType.Random;
+                break;
+            case 1:
+                mapType = MapType.Seeded;
+                break;
+            case 2:
+                mapType = MapType.MapOfTheDay;
+                break;
+        }
+        GameManager.Instance.map = this.gameObject;
         StartGame();
     }
 
