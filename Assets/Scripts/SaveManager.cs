@@ -63,6 +63,11 @@ public class SaveManager : Singleton<SaveManager>
         {
             mapSeed = Int32.Parse(PlayerPrefs.GetString("MapSeed"));
         }
+
+        MusicSlider.value = musicVolume;
+        FXSlider.value = fxVolume;
+        PlayerCountDD.value = playerCount;
+        MapTypeDD.value = mapType;
     }
 
     private void OnApplicationQuit()

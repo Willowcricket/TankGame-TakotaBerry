@@ -25,6 +25,24 @@ public class TankMotor : MonoBehaviour
         Timer();
         HealthCheck();
         PlayerOneOrTwo();
+        UpdateUI();
+    }
+
+    private void UpdateUI()
+    {
+        if (this.gameObject.tag == "Player")
+        {
+            if (GameManager.Instance.playerOne == this.gameObject)
+            {
+                data.PlText.text = "Lives: " + GameManager.Instance.playerOneLives;
+                data.PhText.text = "Health: " + data.currentHealth + "/" + data.maxHealth;
+            }
+            else if (GameManager.Instance.playerTwo == this.gameObject)
+            {
+                data.PlText.text = "Lives: " + GameManager.Instance.playerTwoLives;
+                data.PhText.text = "Health: " + data.currentHealth + "/" + data.maxHealth;
+            }
+        }
     }
 
     private void PlayerOneOrTwo()
